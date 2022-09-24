@@ -26,6 +26,30 @@ export default class StopWatch extends Component {
     date:null, refff:null
       
   };
+  componentDidMount=()=>
+  {
+   setInterval(()=>{
+    let today=new Date();
+    this.setState({ sec1:today.getSeconds() });
+    this.setState({ min1:today.getMinutes() });
+    this.setState({ hour1:today.getHours() });
+    this.setState({ date1:today.getDate() });
+    this.setState({ month1:this.RetriveMonth(today.getMonth()) });
+    this.setState({ year1:today.getFullYear()});
+   },1000);
+   
+   
+   
+   
+   
+    //console.log(this.state.currentTime1);
+    this.setState({sec1:this.state.currentTime2.getSeconds()});
+    this.setState({min1:this.state.currentTime2.getMinutes()});
+    this.setState({hour1:this.state.currentTime2.getHours()});
+  //this.handleClickStart2();
+    
+    
+  }
 
 
   handleClickStart=()=>
@@ -37,12 +61,12 @@ export default class StopWatch extends Component {
 
   this.setState({ref:setInterval(()=>{ 
   //console.log("in loop");
-    this.setState({sec:this.state.count+1});
-    if(this.state.sec<60)
+    //this.setState({sec:this.state.count+1});
+    if(this.state.sec<59)
     this.setState({sec:this.state.sec+1})
-    else if(this.state.min<6)
+    else if(this.state.min<59)
     this.setState({sec:0, min:this.state.min+1});
-    else if(this.state.hour<4)
+    else if(this.state.hour<23)
     this.setState({min:0, hour:this.state.hour+1});
     else
     this.setState({sec:0 ,min:0 ,hour:0 });
@@ -83,31 +107,7 @@ handleClicker=(value)=>
     this.setState({switch_stopped2:true});
     
   };
-  componentDidMount=()=>
-  {
-   setInterval(()=>{
-    let today=new Date();
-    this.setState({ sec1:today.getSeconds() });
-    this.setState({ min1:today.getMinutes() });
-    this.setState({ hour1:today.getHours() });
-    this.setState({ date1:today.getDate() });
-    this.setState({ month1:this.RetriveMonth(today.getMonth()) });
-    this.setState({ year1:today.getFullYear()});
-   },1000);
-   
-   
-   
-   
-   
-    //console.log(this.state.currentTime1);
-    this.setState({sec1:this.state.currentTime2.getSeconds()});
-    this.setState({min1:this.state.currentTime2.getMinutes()});
-    this.setState({hour1:this.state.currentTime2.getHours()});
-  //this.handleClickStart2();
     
-    
-  }
-  
   handleClickStop=()=>
   {
     if(this.state.switch_stopped===false)
@@ -167,14 +167,15 @@ Toggler3=()=>
         <h1>{this.state.date1}/{this.state.month1}/{this.state.year1}</h1>
         <h1>{this.state.hour1}h::{this.state.min1}m::{this.state.sec1}s</h1>
         </div> }        
-        { this.state.stopWatchToggler
+        { 
+        this.state.stopWatchToggler
           && <div>
           <h1>{this.state.hour}h::{this.state.min}m::{this.state.sec}s</h1>
           
       <button className='btn btn-primary' onClick={this.handleClickStart}>start</button>
       <button className='btn btn-primary' onClick={this.handleClickStop} style={{margin:20}}>stop</button>
       <button className='btn btn-primary' onClick={this.handleClickReset}>reset</button>
-          {this.state.toggle &&<StopChild  value={this.state.arr}/> }
+          
           
           </div>        
           
