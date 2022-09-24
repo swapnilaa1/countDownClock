@@ -4,6 +4,7 @@ import StopChild from './StopChild';
 export default class StopWatch extends Component {
   
   state={
+    isNaN:false,
     timetoggle:true,
     sec:0,
     min:0,
@@ -77,23 +78,44 @@ export default class StopWatch extends Component {
 
 handleClicker=(value)=>
 {
-  if(this.state.switch_stopped2===true){
-    this.setState({ switch_stopped2:false });
-    let wantDate=new Date(value).getTime();
-  console.log(wantDate);
-  this.setState({timetoggle:false});
-  this.setState({refff:setInterval(()=>{
-    let today=new Date().getTime();
-  let difference=wantDate-today;
-    this.setState({sec2:Math.floor((difference%(1000*60))/(1000)),
-    min2:Math.floor((difference%(1000*60*60))/(1000*60)),
-   hour2:Math.floor((difference%(1000*60*60*24))/(1000*60*60)),
-   date2:Math.floor(difference/(1000*60*60*24))
- });
- console.log("first");
+  
+  try {
+    if(this.state.switch_stopped2===true){
+      this.setState({ switch_stopped2:false });
+      
+      let wantDate=new Date(value).getTime();
+    console.log("wantdate",wantDate);
+    this.setState({timetoggle:false});
+    
+    
+    this.setState({refff:setInterval(()=>{
+      let today=new Date().getTime();
+    let difference=wantDate-today;
+        if(!isNaN(wantDate)){
+            
+          this.setState({sec2:Math.floor((difference%(1000*60))/(1000)),
+          min2:Math.floor((difference%(1000*60*60))/(1000*60)),
+         hour2:Math.floor((difference%(1000*60*60*24))/(1000*60*60)),
+         date2:Math.floor(difference/(1000*60*60*24))
+         
+       });
+        }
+        else{
+          this.setState({isNaN:true});
+        }
+        
 
-  },1000)})
+     
+   console.log(difference);
+   console.log("first");
+  
+    },1000)})
+    }    
+    
+  } catch (error) {
+    alert("Please Enter valid Date and Time ");
   }
+
   };
 
   hanadleReset2=()=>{
@@ -141,20 +163,20 @@ RetriveMonth=(m)=>
 Toggler1=()=>
 {
 
-  this.setState({ currentTimeToggler:true, countDownToggler:false , stopWatchToggler:false});
+  this.setState({ currentTimeToggler:true, countDownToggler:false , stopWatchToggler:false , isNaN:false});
   console.log(this.state.currentTimeToggler);
 
 };
 Toggler2=()=>
 {
-  this.setState({stopWatchToggler:true , currentTimeToggler:false , countDownToggler:false});
+  this.setState({stopWatchToggler:true , currentTimeToggler:false , countDownToggler:false , isNaN:false});
   console.log(this.state.stopWatchToggler);
 
 };
 
 Toggler3=()=>
 {
-  this.setState({ countDownToggler:true , stopWatchToggler: false , currentTimeToggler:false});
+  this.setState({ countDownToggler:true , stopWatchToggler: false , currentTimeToggler:false , isNaN:false});
   console.log(this.state.countDownToggler);
 }
 
@@ -182,7 +204,7 @@ Toggler3=()=>
         }
         {this.state.countDownToggler && 
         <div className='container'>
-          <h3>select the date and time for count Down</h3>
+         {  this.state.isNaN===false?<h3>select the date and time for count Down</h3> : <h3>Alert! Enter valid date and time</h3>  } 
           
         { !(this.state.timetoggle)  && <div><h1>{this.state.date2}d::{this.state.hour2}h::{this.state.min2}m::{this.state.sec2}s</h1>
         <button onClick={this.hanadleReset2} className="btn btn-primary" >Reset</button>
